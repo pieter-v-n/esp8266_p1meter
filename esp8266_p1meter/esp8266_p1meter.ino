@@ -147,6 +147,7 @@ void send_data_to_broker()
     send_metric("l3_voltage", L3_VOLTAGE);
     
     send_metric("gas_meter_m3", GAS_METER_M3);
+    send_metric("heat_meter_gj", HEAT_METER_GJ);
 
     send_metric("actual_tarif_group", ACTUAL_TARIF);
     send_metric("short_power_outages", SHORT_POWER_OUTAGES);
@@ -367,7 +368,21 @@ bool decode_telegram(int len)
         L3_VOLTAGE = getValue(telegram, len, '(', '*');
     }
 
-    // 0-1:24.2.1(150531200000S)(00811.923*m3)
+    // 0-1:24.2.1(150531200000S)(00811.923*m3) or 0-1:24.2.1(210212110301W)(24.689*GJ)
+    // 0-1:24.2.1 = Gas (DSMR v4.0) on Kaifa MA105 meter or Heat on Vattenfall cityheat meter
+    if (strncmp(telegram, "0-1:24.2.1", strlen("0-1:24.2.1")) == 0)
+    {
+	if (strpbrk(telegram, "GJ") != NULL)
+	{
+            HEAT_METER_GJ = getValue(telegram, len, '(', '*');
+	}
+	else
+	{
+            GAS_METER_M3 = getValue(telegram, len, '(', '*');
+	}
+    }
+
+    // 0-1:24.2.1(210212110301W)(24.689*GJ)
     // 0-1:24.2.1 = Gas (DSMR v4.0) on Kaifa MA105 meter
     if (strncmp(telegram, "0-1:24.2.1", strlen("0-1:24.2.1")) == 0)
     {
