@@ -382,13 +382,6 @@ bool decode_telegram(int len)
 	}
     }
 
-    // 0-1:24.2.1(210212110301W)(24.689*GJ)
-    // 0-1:24.2.1 = Gas (DSMR v4.0) on Kaifa MA105 meter
-    if (strncmp(telegram, "0-1:24.2.1", strlen("0-1:24.2.1")) == 0)
-    {
-        GAS_METER_M3 = getValue(telegram, len, '(', '*');
-    }
-
     // 0-0:96.14.0(0001)
     // 0-0:96.14.0 = Actual Tarif
     if (strncmp(telegram, "0-0:96.14.0", strlen("0-0:96.14.0")) == 0)
