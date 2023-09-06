@@ -155,3 +155,11 @@ mqtt:
     - name: P1 Short Power Peaks
       unique_id: 'sensor.p1_short_power_peaks'
       state_topic: "sensors/power/p1meter/short_power_peaks"
+
+    - name: Heat Consumption
+      unique_id: 'sensor.p1_heat_usage'
+      device_class: heat
+      state_class: total_increasing
+      unit_of_measurement: 'GJ'
+      state_topic: "sensors/power/p1meter/heat_meter_gj"
+      value_template: "{{ value|float / 1 }}"
