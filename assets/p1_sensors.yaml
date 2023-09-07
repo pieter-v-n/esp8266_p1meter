@@ -162,4 +162,4 @@ mqtt:
       state_class: total_increasing
       unit_of_measurement: 'GJ'
       state_topic: "sensors/power/p1meter/heat_meter_gj"
-      value_template: "{{ value|float / 1 }}"
+      value_template: "{{ value|float / 1000 }}"
